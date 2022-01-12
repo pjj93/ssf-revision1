@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,22 +17,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import ibf.ssf.ssftodo.Constants;
 import ibf.ssf.ssftodo.SsftodoApplication;
+import ibf.ssf.ssftodo.service.TaskService;
 
 @Controller
 @RequestMapping(path="/task", produces=MediaType.TEXT_HTML_VALUE)
 public class TaskController {
     private final Logger logger = Logger.getLogger(SsftodoApplication.class.getName());
-    // @GetMapping(path="{taskId}")
-    // public String getTask() {
-    //     return "";
-    // }
+ 
+    @Autowired
+    private TaskService taskSvc;
+    
+    @PostMapping("save")
+    public String postTaskSave(@RequestBody MultiValueMap<String, String> form) {
+        String contents = form.getFirst("contents");
 
-    // @GetMapping
-    // public String getTasks() {
-    //     return "";
-    // }
+        logger.log(Level.INFO, "to be saved: '%s'".formatted(contents));
+        
+        taskSvc.save(Constants.TODO_KEY, contents);
 
-    //(value="path")
+        return "index";
+    }
+
     @PostMapping
     public String Task(@RequestBody MultiValueMap<String, String> form, Model model) {
         String taskName = form.getFirst("taskName");

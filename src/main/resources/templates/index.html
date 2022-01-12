@@ -5,34 +5,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Todo</title>
+    <link rel="stylesheet" href="/bootstrap.min.css">
 </head>
 <body>
-    <h1>My Todo</h1>
-    <form method="POST" action="/task">
-
-        <input type="hidden" id="contents" name="contents" data-th-value="${contents}">
-
-        <div>
-            <label for="taskName">Task Name:</label>
-            <input type="text" name="taskName" id="taskName" placeholder="Enter a task" required>
-            <button type="submit">Add Task</button>
+    <div class="container">
+        
+        <div class="row mt-3 mb-2">
+            <div class="col">
+                <h1>My Todo</h1>
+            </div>
         </div>
-    </form>
 
-    <h2 data-th-if="${contents == null}">There are no tasks in your list</h2>
+        <div class="row mb-5">
+            <div class="col">
+                <form method="POST" action="/task">
 
-    <div data-th-if="${contents != null}">
-        <h2>List of your tasks</h2>
-        <ol>
-            <li data-th-each="t: ${tasks}">
-                <span data-th-text="${t}"></span>
-            </li>
-        </ol>
+                    <input type="hidden" id="contents" name="contents" data-th-value="${contents}">
+
+                    <div class="mb-2 input-group">
+                        <!-- <label for="taskName" class="form-label">Task Name:</label> 
+                        -->
+                        <input type="text" name="taskName" id="taskName" placeholder="Enter a task" class="form-control">
+                        <button type="submit" class="btn btn-primary">Add Task</button>
+                        <button type="submit" class="btn btn-info" formaction="/task/save" formmethod="POST">Save Task</button>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <!--  <button type="submit" class="btn btn-primary">Add Task</button>
+                            -->
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <h3 data-th-if="${contents == null}">There are no tasks in your list</h3>
+        </div>
+        
+        <div class="row" data-th-if="${contents != null}">
+            <h3>List of your tasks</h3>
+            <ol class="list-group list-group-numbered">
+                <li class="list-group-item" data-th-each="t: ${tasks}">
+                    <span data-th-text="${t}"></span>
+                </li>
+            </ol>
+        </div>
+        <!--  
+            <ol th:each="t: ${tasks}">
+                <li th:text="${tasks.task}"></li>
+            </ol>
+        -->
     </div>
-    <!--  
-        <ol th:each="t: ${tasks}">
-            <li th:text="${tasks.task}"></li>
-        </ol>
-    -->
 </body>
 </html>
